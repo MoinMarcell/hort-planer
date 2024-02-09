@@ -1,11 +1,12 @@
 package com.github.moinmarcell.backend.events;
 
+import com.github.moinmarcell.backend.utility.TimeService;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
 @Document
-public record HortEvent(
+record HortEvent(
         String id,
         String title,
         String description,
@@ -14,13 +15,14 @@ public record HortEvent(
         LocalDateTime createdAt
 ) {
     static HortEvent fromDto(HortEventDto eventDto) {
+        final TimeService timeService = new TimeService();
         return new HortEvent(
                 null,
                 eventDto.title(),
                 eventDto.description(),
                 eventDto.startDateTime(),
                 eventDto.endDateTime(),
-                LocalDateTime.now()
+                timeService.getCurrentTime()
         );
     }
 

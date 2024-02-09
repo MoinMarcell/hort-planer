@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
-public class HortEventService {
+class HortEventService {
 
     private final HortEventsRepository hortEventsRepository;
 
@@ -23,7 +23,8 @@ public class HortEventService {
     }
 
     HortEvent createHortEvent(HortEventDto hortEventDto) {
-        return hortEventsRepository.save(HortEvent.fromDto(hortEventDto));
+        HortEvent savedHortEvent = hortEventsRepository.save(HortEvent.fromDto(hortEventDto));
+        return getHortEventById(savedHortEvent.id());
     }
 
     HortEvent updateHortEvent(String id, HortEventDto hortEventDto) {

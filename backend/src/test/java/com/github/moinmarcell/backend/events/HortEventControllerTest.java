@@ -129,7 +129,7 @@ class HortEventControllerTest {
         assertEquals(updatedHortEventDto.description(), updatedHortEvent.description());
         assertEquals(updatedHortEventDto.startDateTime(), updatedHortEvent.startDateTime());
         assertEquals(updatedHortEventDto.endDateTime(), updatedHortEvent.endDateTime());
-        assertNotNull(updatedHortEvent.createdAt());
+        assertEquals(savedHortEvent.createdAt(), updatedHortEvent.createdAt());
     }
 
     @Test
