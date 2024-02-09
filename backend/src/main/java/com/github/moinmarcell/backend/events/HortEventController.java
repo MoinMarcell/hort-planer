@@ -10,11 +10,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/events")
 @RequiredArgsConstructor
-public class HortEventController {
+class HortEventController {
     private final HortEventService hortEventService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<HortEvent> getAllHortEvents() {
+    List<HortEvent> getAllHortEvents() {
         return hortEventService.getAllHortEvents();
     }
 
@@ -22,7 +22,7 @@ public class HortEventController {
             path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public HortEvent getHortEventById(@PathVariable String id) {
+    HortEvent getHortEventById(@PathVariable String id) {
         return hortEventService.getHortEventById(id);
     }
 
@@ -31,7 +31,7 @@ public class HortEventController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.CREATED)
-    public HortEvent createHortEvent(@RequestBody HortEventDto hortEventDto) {
+    HortEvent createHortEvent(@RequestBody HortEventDto hortEventDto) {
         return hortEventService.createHortEvent(hortEventDto);
     }
 
@@ -40,7 +40,7 @@ public class HortEventController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public HortEvent updateHortEvent(
+    HortEvent updateHortEvent(
             @PathVariable String id,
             @RequestBody HortEventDto hortEventDto
     ) {
@@ -51,7 +51,7 @@ public class HortEventController {
             path = "/{id}",
             produces = MediaType.TEXT_PLAIN_VALUE
     )
-    public String deleteHortEventById(@PathVariable String id) {
+    String deleteHortEventById(@PathVariable String id) {
         return hortEventService.deleteHortEventById(id);
     }
 }
