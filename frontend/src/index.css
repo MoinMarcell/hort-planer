@@ -37,3 +37,7 @@ main {
     background-color: darkgoldenrod;
     border-color: darkgoldenrod;
 }
+
+.textarea-vertical {
+    resize: vertical;
+}
