@@ -4,7 +4,8 @@ type CustomDialogProps = {
     open: boolean,
     close: () => void,
     title: string,
-    description: string | ReactNode
+    description: string | ReactNode,
+    onConfirm?: () => Promise<void>
 }
 export default function CustomDialog(props: Readonly<CustomDialogProps>) {
     return (
@@ -17,14 +18,20 @@ export default function CustomDialog(props: Readonly<CustomDialogProps>) {
                    onClick={props.close}>
                 </a>
                 <h3>{props.title}</h3>
-                <p>
-                    {props.description}
-                </p>
+                {
+                    props.onConfirm ?
+                        <p>
+                            {props.description}
+                        </p> :
+                        <>
+                            {props.description}
+                        </>
+                }
                 <footer>
                     <button className="secondary"
                             onClick={props.close}>Abbrechen
                     </button>
-                    <button>Bestätigen</button>
+                    {props.onConfirm && <button onClick={props.onConfirm}>Bestätigen</button>}
                 </footer>
             </article>
         </dialog>
