@@ -7,6 +7,6 @@ import java.time.LocalDateTime;
 @Service
 public class TimeService {
     public LocalDateTime getCurrentTime() {
-        return LocalDateTime.now();
+        return LocalDateTime.now().withNano(0);
     }
 }
