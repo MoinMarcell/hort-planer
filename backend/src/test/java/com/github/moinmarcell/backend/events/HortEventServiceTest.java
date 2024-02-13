@@ -60,11 +60,9 @@ class HortEventServiceTest {
         HortEvent expected = new HortEvent("1", "title", "description", null, null, null);
         // WHEN
         when(hortEventsRepository.save(any(HortEvent.class))).thenReturn(expected);
-        when(hortEventsRepository.findById("1")).thenReturn(Optional.of(expected));
         HortEvent actual = hortEventService.createHortEvent(hortEventDto);
         // THEN
         verify(hortEventsRepository).save(any(HortEvent.class));
-        verify(hortEventsRepository).findById("1");
         assertEquals(expected, actual);
     }
 

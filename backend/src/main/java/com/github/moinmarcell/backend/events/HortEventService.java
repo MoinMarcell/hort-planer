@@ -23,8 +23,7 @@ class HortEventService {
     }
 
     HortEvent createHortEvent(HortEventDto hortEventDto) {
-        HortEvent savedHortEvent = hortEventsRepository.save(HortEvent.fromDto(hortEventDto));
-        return getHortEventById(savedHortEvent.id());
+        return hortEventsRepository.save(HortEvent.fromDto(hortEventDto));
     }
 
     HortEvent updateHortEvent(String id, HortEventDto hortEventDto) {
