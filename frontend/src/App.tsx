@@ -1,23 +1,20 @@
 import Layout from "./components/Layout.tsx";
-import NewHortEventForm from "./components/hort-events/NewHortEventForm.tsx";
 import useHortEvents from "./hooks/useHortEvents.ts";
 import HortEventGallery from "./components/hort-events/HortEventGallery.tsx";
-import {useState} from "react";
-import CustomDialog from "./components/CustomDialog.tsx";
+import {Route, Routes} from "react-router-dom";
+import HortEventDetailsPage from "./components/hort-events/HortEventDetailsPage.tsx";
+import HomePage from "./pages/HomePage.tsx";
 
 export default function App() {
-    const {hortEvents, createEvent, deleteEvent} = useHortEvents();
-    const [openNewEventDialog, setOpenNewEventDialog] = useState<boolean>(false);
+    const {hortEvents} = useHortEvents();
+
     return (
         <Layout>
-            <button id="button-add-event" onClick={() => setOpenNewEventDialog(true)}>Ein neues Event erstellen</button>
-            <CustomDialog
-                open={openNewEventDialog}
-                close={() => setOpenNewEventDialog(false)}
-                title={"Neues Event erstellen"}
-                description={<NewHortEventForm createHortEvent={createEvent}/>}
-            />
-            <HortEventGallery deleteEvent={deleteEvent} events={hortEvents}/>
+            <Routes>
+                <Route path="/" element={<HomePage events={hortEvents}/>}/>
+                <Route path="/events" element={<HortEventGallery events={hortEvents}/>}/>
+                <Route path="/events/:hortEventId" element={<HortEventDetailsPage/>}/>
+            </Routes>
         </Layout>
     )
 }
