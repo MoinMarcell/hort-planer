@@ -1,12 +1,12 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 type DesktopMenuProps = {
     pages: { title: string, path: string }[],
     pathname: string,
-    handleOpenModal: () => void,
 }
 
 export default function DesktopMenu(props: Readonly<DesktopMenuProps>) {
+    const navigate = useNavigate();
     return (
         <>
             <ul className="d-none d-md-flex nav mb-2 justify-content-centermb-md-0">
@@ -22,7 +22,7 @@ export default function DesktopMenu(props: Readonly<DesktopMenuProps>) {
                 }
             </ul>
             <div className="text-end d-none d-md-flex">
-                <button onClick={props.handleOpenModal} type="button"
+                <button onClick={() => navigate("/events/create")} type="button"
                         className="btn btn-outline-light me-2">Neues Event
                 </button>
             </div>
