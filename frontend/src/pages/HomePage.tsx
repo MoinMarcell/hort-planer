@@ -1,5 +1,5 @@
 import {HortEvent} from "../types/HortEvent.ts";
-import HortEventCard from "../components/hort-events/HortEventCard.tsx";
+import HortEventGallery from "../components/hort-events/HortEventGallery.tsx";
 
 type HomePageProps = {
     events: HortEvent[],
@@ -7,20 +7,28 @@ type HomePageProps = {
 
 export default function HomePage(props: Readonly<HomePageProps>) {
 
-    const nextEvent: HortEvent | undefined = props.events.find((event) => {
-        const eventDate: Date = new Date(event.startDateTime);
-        const now: Date = new Date();
-        return eventDate > now;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const futureEvents = props.events.filter(event => {
+        const eventDate = new Date(event.startDateTime);
+        return eventDate >= today;
     });
 
+    function sortEvents(events: HortEvent[]): HortEvent[] {
+        return [...events].sort((a, b) => {
+            const dateA = new Date(a.startDateTime).getTime();
+            const dateB = new Date(b.startDateTime).getTime();
+            return dateA - dateB;
+        });
+    }
+
+    const firstFiveFutureEvents = sortEvents(futureEvents).slice(0, 5);
+
     return (
-        <>
-            <h2>Nächstes Event:</h2>
-            {
-                nextEvent ?
-                    <HortEventCard event={nextEvent}/> :
-                    <p>Keine Events geplant!</p>
-            }
-        </>
+        <div className="container">
+            <h2 className="pb-2 border-bottom">Anstehende Events</h2>
+            <HortEventGallery events={firstFiveFutureEvents}/>
+        </div>
     );
 }

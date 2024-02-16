@@ -6,37 +6,30 @@ type HortEventCardProps = {
 }
 
 export default function HortEventCard(props: Readonly<HortEventCardProps>) {
-    const MAX_DESCRIPTION_LENGTH: number = 100;
-
-    const startDateTime: Date = new Date(props.event.startDateTime);
-    const endDateTime: Date = new Date(props.event.endDateTime);
-
-    function getDateString(date: Date): string {
-        return date.toLocaleDateString("de-DE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit"
-        });
-    }
-
-    function shortenDescription(description: string): string {
-        return description.slice(0, MAX_DESCRIPTION_LENGTH) + (description.length > MAX_DESCRIPTION_LENGTH ? "..." : "");
-    }
-
+    const startDateTime = new Date(props.event.startDateTime);
+    const startDay = startDateTime.toLocaleDateString("de-DE", {day: "2-digit"});
+    const startMonth = startDateTime.toLocaleDateString("de-DE", {month: "short"});
     return (
-        <div className="card">
-            <div className="card-header">
-                <ul className="p-0 m-0">
-                    <li className="list-group-item">Start: {getDateString(startDateTime)} Uhr</li>
-                    <li className="list-group-item">Ende: {getDateString(endDateTime)} Uhr</li>
-                </ul>
-            </div>
-            <div className="card-body">
-                <h5 className="card-title">{props.event.title}</h5>
-                <p className="card-text">{shortenDescription(props.event.description)}</p>
-                <Link to={`/events/${props.event.id}`} className="btn btn-primary">Details</Link>
+        <div className="row g-4 py-3 row-cols-1 row-cols-lg-3">
+            <div className="col d-flex align-items-start">
+                <div className={"d-flex flex-column gap-2"}>
+                    <div
+                        className="icon-square text-body-emphasis bg-body-secondary d-inline-flex flex-column align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                        <p style={{padding: 0, margin: 0, fontSize: '15px', fontWeight: 'bold'}}>{startDay}.</p>
+                        <p style={{padding: 0, margin: 0, fontSize: '15px'}}>{startMonth}.</p>
+                    </div>
+                    <div
+                        className="icon-square text-body-emphasis bg-body-secondary d-inline-flex flex-column align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                        <p style={{padding: 0, margin: 0, fontSize: '15px', fontWeight: 'bold'}}>0/12</p>
+                        <p style={{padding: 0, margin: 0, fontSize: '15px'}}>Plätze</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 className="fs-2 text-body-emphasis">{props.event.title}</h3>
+                    <Link to={`/events/${props.event.id}`} className="btn btn-primary">
+                        Zur Anmeldung
+                    </Link>
+                </div>
             </div>
         </div>
     );

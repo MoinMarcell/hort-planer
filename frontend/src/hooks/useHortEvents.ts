@@ -1,4 +1,4 @@
-import {HortEvent} from "../types/HortEvent.ts";
+import {HortEvent, HortEventDto} from "../types/HortEvent.ts";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
@@ -13,11 +13,24 @@ export default function useHortEvents() {
             .catch(console.error);
     }
 
+    async function createEvent(event: HortEventDto): Promise<HortEvent> {
+        return axios.post(BASE_URI, event)
+            .then((r) => {
+                fetchAll();
+                return r.data;
+            })
+            .catch((e) => {
+                console.error("Failed to create event: " + e);
+                throw new Error("Failed to create event: " + e);
+            });
+    }
+
     useEffect((): void => {
         fetchAll();
     }, []);
 
     return {
         hortEvents,
+        createEvent
     };
 }
