@@ -7,13 +7,17 @@ type NewHortEventFormProps = {
     createHortEvent: (event: HortEventDto) => Promise<HortEvent>,
 }
 
-export default function NewHortEventForm(props: Readonly<NewHortEventFormProps>) {
+export default function HortEventForm(props: Readonly<NewHortEventFormProps>) {
+    const initialDate = new Date();
+    const initialDateString = initialDate.toISOString().split("T")[0];
+    const initialTimeString = initialDate.toISOString().split("T")[1].split(".")[0].slice(0, 5);
+
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
-    const [startDate, setStartDate] = useState<string>("");
-    const [startTime, setStartTime] = useState<string>("");
-    const [endDate, setEndDate] = useState<string>("");
-    const [endTime, setEndTime] = useState<string>("");
+    const [startDate, setStartDate] = useState<string>(initialDateString);
+    const [startTime, setStartTime] = useState<string>(initialTimeString);
+    const [endDate, setEndDate] = useState<string>(initialDateString);
+    const [endTime, setEndTime] = useState<string>(initialTimeString);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const navigate = useNavigate();

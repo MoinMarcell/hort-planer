@@ -9,6 +9,9 @@ export default function HortEventCard(props: Readonly<HortEventCardProps>) {
     const startDateTime = new Date(props.event.startDateTime);
     const startDay = startDateTime.toLocaleDateString("de-DE", {day: "2-digit"});
     const startMonth = startDateTime.toLocaleDateString("de-DE", {month: "short"});
+
+    const isPastEvent = startDateTime < new Date();
+
     return (
         <div className="row g-4 py-3 row-cols-1 row-cols-lg-3">
             <div className="col d-flex align-items-start">
@@ -25,10 +28,11 @@ export default function HortEventCard(props: Readonly<HortEventCardProps>) {
                     </div>
                 </div>
                 <div>
-                    <h3 className="fs-2 text-body-emphasis">{props.event.title}</h3>
-                    <Link to={`/events/${props.event.id}`} className="btn btn-primary">
+                    <h3 className="fs-2 text-body-emphasis"><Link
+                        to={`/events/${props.event.id}`}>{props.event.title}</Link></h3>
+                    {!isPastEvent && <Link to={`/events/${props.event.id}`} className="btn btn-primary">
                         Zur Anmeldung
-                    </Link>
+                    </Link>}
                 </div>
             </div>
         </div>

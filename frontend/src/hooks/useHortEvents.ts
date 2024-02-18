@@ -25,12 +25,24 @@ export default function useHortEvents() {
             });
     }
 
+    async function deleteEvent(id: string): Promise<void> {
+        return axios.delete(`${BASE_URI}/${id}`)
+            .then(() => {
+                fetchAll();
+            })
+            .catch((e) => {
+                console.error("Failed to delete event: " + e);
+                throw new Error("Failed to delete event: " + e);
+            });
+    }
+
     useEffect((): void => {
         fetchAll();
     }, []);
 
     return {
         hortEvents,
-        createEvent
+        createEvent,
+        deleteEvent
     };
 }
