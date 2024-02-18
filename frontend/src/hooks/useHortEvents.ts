@@ -1,6 +1,7 @@
 import {HortEvent, HortEventDto} from "../types/HortEvent.ts";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import {toast} from "react-toastify";
 
 export default function useHortEvents() {
     const [hortEvents, setHortEvents] = useState<HortEvent[]>([]);
@@ -10,7 +11,7 @@ export default function useHortEvents() {
     function fetchAll(): void {
         axios.get(BASE_URI)
             .then(r => setHortEvents(r.data))
-            .catch(console.error);
+            .catch((e) => toast.error("Failed to fetch events from server: " + e.message));
     }
 
     async function createEvent(event: HortEventDto): Promise<HortEvent> {
@@ -20,7 +21,6 @@ export default function useHortEvents() {
                 return r.data;
             })
             .catch((e) => {
-                console.error("Failed to create event: " + e);
                 throw new Error("Failed to create event: " + e);
             });
     }
@@ -31,7 +31,6 @@ export default function useHortEvents() {
                 fetchAll();
             })
             .catch((e) => {
-                console.error("Failed to delete event: " + e);
                 throw new Error("Failed to delete event: " + e);
             });
     }

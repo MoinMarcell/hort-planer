@@ -3,6 +3,7 @@ import {HortEvent} from "../../types/HortEvent.ts";
 import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import LoadSpinner from "../LoadSpinner.tsx";
+import {toast} from "react-toastify";
 
 type HortEventDetailsPageProps = {
     deleteHortEvent: (id: string) => Promise<void>,
@@ -18,13 +19,21 @@ export default function HortEventDetailsPage(props: Readonly<HortEventDetailsPag
 
     const navigate = useNavigate();
 
+    if (!id) {
+        toast.error("Event ID fehlt");
+        navigate("/events");
+    }
+
     const fetchHortEvent = useCallback(() => {
         setIsLoading(true);
         axios.get("/api/events/" + id)
             .then(r => setHortEvent(r.data))
-            .catch(e => console.error(e))
+            .catch(e => {
+                toast.error("Fehler beim Laden des Events " + e.message);
+                navigate("/events");
+            })
             .finally(() => setIsLoading(false));
-    }, [id]);
+    }, [id, navigate]);
 
     useEffect(() => {
         fetchHortEvent();
@@ -35,11 +44,11 @@ export default function HortEventDetailsPage(props: Readonly<HortEventDetailsPag
             setIsDeleting(true);
             props.deleteHortEvent(hortEvent.id)
                 .then(() => {
-                    console.log("Event deleted");
+                    toast.success("Event gelöscht");
                     navigate("/events");
                 })
                 .catch((error) => {
-                    console.error("Error deleting event", error)
+                    toast.error("Fehler beim Löschen des Events " + error.message);
                 })
                 .finally(() => {
                     setIsDeleting(false);
