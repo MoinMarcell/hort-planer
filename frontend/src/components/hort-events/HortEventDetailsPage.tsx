@@ -55,7 +55,6 @@ export default function HortEventDetailsPage(props: Readonly<HortEventDetailsPag
                     <h1>{hortEvent.title}</h1>
                     <p>{hortEvent.description}</p>
                     <div className="d-flex gap-2">
-                        <button className="btn btn-outline-warning">Bearbeiten</button>
                         {
                             isDeleting ?
                                 <button className="btn btn-outline-danger" disabled><LoadSpinner/></button> :
