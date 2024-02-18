@@ -2,6 +2,7 @@ import {FormEvent, useState} from "react";
 import {HortEvent, HortEventDto} from "../../types/HortEvent.ts";
 import LoadSpinner from "../LoadSpinner.tsx";
 import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
 
 type NewHortEventFormProps = {
     createHortEvent: (event: HortEventDto) => Promise<HortEvent>,
@@ -33,12 +34,12 @@ export default function HortEventForm(props: Readonly<NewHortEventFormProps>) {
         }
         props.createHortEvent(hortEvent)
             .then((event) => {
-                console.log("Event created")
+                toast.success("Event erstellt");
                 navigate(`/events/${event.id}`)
                 resetForm();
             })
             .catch((error) => {
-                console.error("Error creating event", error)
+                toast.error("Fehler beim Erstellen des Events " + error.message);
             })
             .finally(() => setIsLoading(false));
     }
