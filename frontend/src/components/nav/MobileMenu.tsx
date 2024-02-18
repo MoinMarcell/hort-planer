@@ -44,7 +44,10 @@ export default function MobileMenu(props: Readonly<MobileMenuProps>) {
                     ))
                 }
                 <div className="my-3 w-100">
-                    <button onClick={() => navigate("/events/create")} type="button"
+                    <button onClick={() => {
+                        navigate("/events/create");
+                        props.handleOpen();
+                    }} type="button"
                             className="btn btn-outline-light me-2 w-100 border-0">Neues Event
                     </button>
                 </div>

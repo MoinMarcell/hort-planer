@@ -1,14 +1,22 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {HortEvent} from "../../types/HortEvent.ts";
 import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import LoadSpinner from "../LoadSpinner.tsx";
 
-export default function HortEventDetailsPage() {
+type HortEventDetailsPageProps = {
+    deleteHortEvent: (id: string) => Promise<void>,
+}
+
+export default function HortEventDetailsPage(props: Readonly<HortEventDetailsPageProps>) {
     const [hortEvent, setHortEvent] = useState<HortEvent | null | undefined>(undefined);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
     const params = useParams();
     const id: string | undefined = params.hortEventId;
+
+    const navigate = useNavigate();
 
     const fetchHortEvent = useCallback(() => {
         setIsLoading(true);
@@ -22,6 +30,23 @@ export default function HortEventDetailsPage() {
         fetchHortEvent();
     }, [fetchHortEvent, id]);
 
+    function deleteEvent() {
+        if (hortEvent) {
+            setIsDeleting(true);
+            props.deleteHortEvent(hortEvent.id)
+                .then(() => {
+                    console.log("Event deleted");
+                    navigate("/events");
+                })
+                .catch((error) => {
+                    console.error("Error deleting event", error)
+                })
+                .finally(() => {
+                    setIsDeleting(false);
+                });
+        }
+    }
+
     return (
         <div>
             {isLoading && <LoadSpinner/>}
@@ -29,6 +54,16 @@ export default function HortEventDetailsPage() {
                 <div>
                     <h1>{hortEvent.title}</h1>
                     <p>{hortEvent.description}</p>
+                    <div className="d-flex gap-2">
+                        <button className="btn btn-outline-warning">Bearbeiten</button>
+                        {
+                            isDeleting ?
+                                <button className="btn btn-outline-danger" disabled><LoadSpinner/></button> :
+                                <button onClick={deleteEvent} type="button" className="btn btn-outline-danger">
+                                    Löschen
+                                </button>
+                        }
+                    </div>
                 </div>
             )}
         </div>
