@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -38,6 +39,7 @@ class HortEventControllerTest {
 
     @Test
     @DisplayName("GET /api/events/{id} - Success")
+    @WithMockUser
     void getHortEventById_expectStatus200AndHortEventAsJson_whenIdExist() throws Exception {
         HortEventDto hortEventDto = new HortEventDto("Test Event", "Test Description", null, null);
         String hortEventDtoJson = objectMapper.writeValueAsString(hortEventDto);
@@ -73,6 +75,7 @@ class HortEventControllerTest {
 
     @Test
     @DisplayName("POST /api/events - Success")
+    @WithMockUser
     void createHortEvent_expectStatus202AndSavedHortEvent_whenEndpointCalled() throws Exception {
         HortEventDto hortEventDto = new HortEventDto("Test Event", "Test Description", null, null);
         String hortEventDtoJson = objectMapper.writeValueAsString(hortEventDto);
@@ -94,6 +97,7 @@ class HortEventControllerTest {
 
     @Test
     @DisplayName("POST /api/events - Failure 415 Unsupported Media Type")
+    @WithMockUser
     void createHortEvent_expectStatus415_whenUnsupportedMediaType() throws Exception {
         mockMvc.perform(post(BASE_URI)
                         .contentType(MediaType.APPLICATION_XML)
@@ -103,6 +107,7 @@ class HortEventControllerTest {
 
     @Test
     @DisplayName("PUT /api/events/{id} - Success")
+    @WithMockUser
     void updateHortEvent_expectStatus200AndUpdatedHortEvent_whenHortEventByIdExist() throws Exception {
         HortEventDto hortEventDto = new HortEventDto("Test Event", "Test Description", null, null);
         String hortEventDtoJson = objectMapper.writeValueAsString(hortEventDto);
@@ -134,6 +139,7 @@ class HortEventControllerTest {
 
     @Test
     @DisplayName("PUT /api/events/{id} - Failure 404 Not Found")
+    @WithMockUser
     void updateHortEvent_expectStatus404_whenHortEventByIdNotExist() throws Exception {
         String id = "non-existent-id";
         HortEventDto updatedHortEventDto = new HortEventDto("Updated Test Event", "Updated Test Description", null, null);
@@ -147,6 +153,7 @@ class HortEventControllerTest {
 
     @Test
     @DisplayName("PUT /api/events/{id} - Failure 415 Unsupported Media Type")
+    @WithMockUser
     void updateHortEvent_expectStatus415_whenUnsupportedMediaType() throws Exception {
         mockMvc.perform(put(BASE_URI + "/non-existent-id")
                         .contentType(MediaType.APPLICATION_XML)
@@ -156,6 +163,7 @@ class HortEventControllerTest {
 
     @Test
     @DisplayName("DELETE /api/events/{id} - Success")
+    @WithMockUser
     void deleteHortEventById_expectStatus200AndSuccessText_whenIdExist() throws Exception {
         HortEventDto hortEventDto = new HortEventDto("Test Event", "Test Description", null, null);
         String hortEventDtoJson = objectMapper.writeValueAsString(hortEventDto);
@@ -174,6 +182,7 @@ class HortEventControllerTest {
 
     @Test
     @DisplayName("DELETE /api/events/{id} - Failure 404 Not Found")
+    @WithMockUser
     void deleteHortEventById_expectStatus404_whenIdNotExist() throws Exception {
         String id = "non-existent-id";
 
