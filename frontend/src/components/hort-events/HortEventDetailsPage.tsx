@@ -7,6 +7,7 @@ import {toast} from "react-toastify";
 
 type HortEventDetailsPageProps = {
     deleteHortEvent: (id: string) => Promise<void>,
+    isLoggedIn: boolean,
 }
 
 export default function HortEventDetailsPage(props: Readonly<HortEventDetailsPageProps>) {
@@ -63,15 +64,18 @@ export default function HortEventDetailsPage(props: Readonly<HortEventDetailsPag
                 <div>
                     <h1>{hortEvent.title}</h1>
                     <p>{hortEvent.description}</p>
-                    <div className="d-flex gap-2">
-                        {
-                            isDeleting ?
-                                <button className="btn btn-outline-danger" disabled><LoadSpinner/></button> :
-                                <button onClick={deleteEvent} type="button" className="btn btn-outline-danger">
-                                    Löschen
-                                </button>
-                        }
-                    </div>
+                    {
+                        props.isLoggedIn &&
+                        <div className="d-flex gap-2">
+                            {
+                                isDeleting ?
+                                    <button className="btn btn-outline-danger" disabled><LoadSpinner/></button> :
+                                    <button onClick={deleteEvent} type="button" className="btn btn-outline-danger">
+                                        Löschen
+                                    </button>
+                            }
+                        </div>
+                    }
                 </div>
             )}
         </div>

@@ -10,7 +10,12 @@ const pages = [
     {title: "Events", path: "/events"},
 ];
 
-export default function Header() {
+type HeaderProps = {
+    isLoggedIn: boolean,
+    logout: () => void,
+}
+
+export default function Header(props: Readonly<HeaderProps>) {
     const [openMobileMenu, setOpenMobileMenu] = useState(false);
 
     const location: Location = useLocation();
@@ -27,12 +32,14 @@ export default function Header() {
                 <FontAwesomeIcon icon={faDiceD20} size="xl"/> <strong>Hort Planer</strong>
             </Link>
 
-            <DesktopMenu pages={pages} pathname={pathname}/>
+            <DesktopMenu logout={props.logout} isLoggedIn={props.isLoggedIn} pages={pages} pathname={pathname}/>
             <MobileMenu
                 pages={pages}
                 pathname={pathname}
                 isOpen={openMobileMenu}
                 handleOpen={handleChangeOpenMobileMenu}
+                isLoggedIn={props.isLoggedIn}
+                logout={props.logout}
             />
         </header>
     );
