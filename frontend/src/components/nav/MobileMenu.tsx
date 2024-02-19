@@ -7,6 +7,8 @@ type MobileMenuProps = {
     pathname: string,
     isOpen: boolean,
     handleOpen: () => void,
+    isLoggedIn: boolean,
+    logout: () => void,
 }
 
 export default function MobileMenu(props: Readonly<MobileMenuProps>) {
@@ -43,13 +45,31 @@ export default function MobileMenu(props: Readonly<MobileMenuProps>) {
                         </li>
                     ))
                 }
-                <div className="my-3 w-100">
-                    <button onClick={() => {
+                <div className="d-flex flex-column">
+                    {props.isLoggedIn && <button onClick={() => {
                         navigate("/events/create");
                         props.handleOpen();
                     }} type="button"
-                            className="btn btn-outline-light me-2 w-100 border-0">Neues Event
-                    </button>
+                                                 className="btn btn-outline-light border-0">Neues Event
+                    </button>}
+                    {
+                        props.isLoggedIn ?
+                            <button onClick={() => {
+                                navigate("/login");
+                                props.logout();
+                            }}
+                                    type="button"
+                                    className="btn btn-outline-light border-0"
+                            >
+                                Abmelden
+                            </button> :
+                            <button onClick={() => {
+                                navigate("/login");
+                                props.handleOpen();
+                            }} type="button"
+                                    className="btn btn-outline-light border-0">Anmelden
+                            </button>
+                    }
                 </div>
             </ul>
         </div>
