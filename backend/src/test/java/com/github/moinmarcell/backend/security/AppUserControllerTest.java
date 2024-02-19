@@ -10,6 +10,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -34,6 +35,22 @@ class AppUserControllerTest {
     @DisplayName("GET /api/auth/me - Unauthorized")
     void getMe_whenNotLoggedIn_expectStatus401() throws Exception {
         mockMvc.perform(get("/api/auth/me"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(username = "test")
+    @DisplayName("POST /api/auth/login - Success")
+    void login_expectStatus200AndUsername_whenLoggedIn() throws Exception {
+        mockMvc.perform(post("/api/auth/login"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("test"));
+    }
+
+    @Test
+    @DisplayName("POST /api/auth/login - Unauthorized")
+    void login_whenNotLoggedIn_expectStatus401() throws Exception {
+        mockMvc.perform(post("/api/auth/login"))
                 .andExpect(status().isUnauthorized());
     }
 }
