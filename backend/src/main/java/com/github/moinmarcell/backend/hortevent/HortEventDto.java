@@ -1,4 +1,4 @@
-package com.github.moinmarcell.backend.events;
+package com.github.moinmarcell.backend.hortevent;
 
 import java.time.LocalDateTime;
 

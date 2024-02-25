@@ -1,4 +1,4 @@
-package com.github.moinmarcell.backend.events;
+package com.github.moinmarcell.backend.hortevent;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;

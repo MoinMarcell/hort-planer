@@ -1,4 +1,4 @@
-package com.github.moinmarcell.backend.events;
+package com.github.moinmarcell.backend.hortevent;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
