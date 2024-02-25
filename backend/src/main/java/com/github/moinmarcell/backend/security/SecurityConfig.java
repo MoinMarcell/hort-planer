@@ -20,6 +20,7 @@ public class SecurityConfig {
 
     private static final String EVENTS_ENDPOINT = "/api/events";
     private static final String AUTH_ENDPOINT = "/api/auth";
+    private static final String PNP_SESSIONS_ENDPOINT = "/api/pnp-sessions";
 
     @Value("${app.url}")
     private String appUrl;
@@ -38,9 +39,12 @@ public class SecurityConfig {
                 .httpBasic(c -> c.authenticationEntryPoint((request, response, authException) -> response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase())))
                 .logout(c -> c.logoutSuccessUrl(appUrl))
                 .authorizeHttpRequests(c -> c
-                        .requestMatchers(HttpMethod.POST, EVENTS_ENDPOINT).authenticated()
-                        .requestMatchers(HttpMethod.PUT, EVENTS_ENDPOINT + "/*").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, EVENTS_ENDPOINT + "/*").authenticated()
+                        .requestMatchers(HttpMethod.POST, EVENTS_ENDPOINT).hasAuthority(AppUserRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT, EVENTS_ENDPOINT + "/**").hasAuthority(AppUserRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE, EVENTS_ENDPOINT + "/**").hasAuthority(AppUserRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, PNP_SESSIONS_ENDPOINT + "/**").hasAnyAuthority(AppUserRole.ADMIN.name(), AppUserRole.GAME_MASTER.name())
+                        .requestMatchers(HttpMethod.PUT, PNP_SESSIONS_ENDPOINT + "/**").hasAnyAuthority(AppUserRole.ADMIN.name(), AppUserRole.GAME_MASTER.name())
+                        .requestMatchers(HttpMethod.DELETE, PNP_SESSIONS_ENDPOINT + "/**").hasAnyAuthority(AppUserRole.ADMIN.name(), AppUserRole.GAME_MASTER.name())
                         .requestMatchers(AUTH_ENDPOINT + "/me").authenticated()
                         .anyRequest().permitAll()
                 );

@@ -1,5 +1,6 @@
 package com.github.moinmarcell.backend.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,18 +13,23 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AppUserController {
+    private final AppUserRepository appUserRepository;
+
     @GetMapping("/me")
-    public String getMe() {
+    public AppUserResponse getMe() {
         var securityContext = SecurityContextHolder.getContext();
         if (!Objects.equals(securityContext.getAuthentication().getName(), "anonymousUser")) {
-            return securityContext.getAuthentication().getName();
+            AppUser appUser = appUserRepository.findAppUserByUsername(securityContext.getAuthentication().getName())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No User Logged In"));
+            return new AppUserResponse(appUser.getUsername(), appUser.getRole());
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No User Logged In");
     }
 
     @PostMapping("/login")
-    public String login() {
+    public AppUserResponse login() {
         return getMe();
     }
 }

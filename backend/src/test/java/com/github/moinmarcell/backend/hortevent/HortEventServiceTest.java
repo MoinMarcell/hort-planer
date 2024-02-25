@@ -1,4 +1,4 @@
-package com.github.moinmarcell.backend.events;
+package com.github.moinmarcell.backend.hortevent;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ class HortEventServiceTest {
     void getHortEventById_returnHortEvent_whenHortEventExistById() {
         // GIVEN
         String id = "1";
-        HortEvent expected = new HortEvent(id, "title", "description", null, null, null);
+        HortEvent expected = new HortEvent(id, "title", "description", null, null, null, List.of());
         // WHEN
         when(hortEventsRepository.findById(id)).thenReturn(Optional.of(expected));
         HortEvent actual = hortEventService.getHortEventById(id);
@@ -57,7 +57,7 @@ class HortEventServiceTest {
     void createHortEvent_returnCreatedHortEvent_whenMethodCalled() {
         // GIVEN
         HortEventDto hortEventDto = new HortEventDto("title", "description", null, null);
-        HortEvent expected = new HortEvent("1", "title", "description", null, null, null);
+        HortEvent expected = new HortEvent("1", "title", "description", null, null, null, List.of());
         // WHEN
         when(hortEventsRepository.save(any(HortEvent.class))).thenReturn(expected);
         HortEvent actual = hortEventService.createHortEvent(hortEventDto);
@@ -72,8 +72,8 @@ class HortEventServiceTest {
         // GIVEN
         String id = "1";
         HortEventDto hortEventDto = new HortEventDto("title", "description", null, null);
-        HortEvent hortEvent = new HortEvent(id, "title", "description", null, null, null);
-        HortEvent expected = new HortEvent(id, "title", "description", null, null, null);
+        HortEvent hortEvent = new HortEvent(id, "title", "description", null, null, null, List.of());
+        HortEvent expected = new HortEvent(id, "title", "description", null, null, null, List.of());
         // WHEN
         when(hortEventsRepository.findById(id)).thenReturn(Optional.of(hortEvent));
         when(hortEventsRepository.save(any(HortEvent.class))).thenReturn(expected);
@@ -99,7 +99,7 @@ class HortEventServiceTest {
     void deleteHortEventById_returnSuccessString_whenHortEventExistById() {
         // GIVEN
         String id = "1";
-        HortEvent hortEvent = new HortEvent(id, "title", "description", null, null, null);
+        HortEvent hortEvent = new HortEvent(id, "title", "description", null, null, null, List.of());
         String expected = "Hort Event with id " + id + " has been deleted.";
         // WHEN
         when(hortEventsRepository.findById(id)).thenReturn(Optional.of(hortEvent));

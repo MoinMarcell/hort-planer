@@ -1,4 +1,4 @@
-package com.github.moinmarcell.backend.events;
+package com.github.moinmarcell.backend.hortevent;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
-class HortEventService {
+public class HortEventService {
 
     private final HortEventsRepository hortEventsRepository;
 
@@ -16,7 +16,7 @@ class HortEventService {
         return hortEventsRepository.findAll();
     }
 
-    HortEvent getHortEventById(String id) {
+    public HortEvent getHortEventById(String id) {
         return hortEventsRepository
                 .findById(id)
                 .orElseThrow(() -> new NoSuchElementException(String.format("No Hort Event found with id %s", id)));
@@ -38,4 +38,9 @@ class HortEventService {
         return "Hort Event with id " + id + " has been deleted.";
     }
 
+    public void addPnpSessionToHortEvent(String hortEventId, String pnpSessionId) {
+        HortEvent hortEvent = getHortEventById(hortEventId);
+        hortEvent.addPnpSessionId(pnpSessionId);
+        hortEventsRepository.save(hortEvent);
+    }
 }

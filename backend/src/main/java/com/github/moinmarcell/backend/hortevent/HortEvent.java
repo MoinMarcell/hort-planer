@@ -1,18 +1,21 @@
-package com.github.moinmarcell.backend.events;
+package com.github.moinmarcell.backend.hortevent;
 
 import com.github.moinmarcell.backend.utility.TimeService;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Document
-record HortEvent(
+public record HortEvent(
         String id,
         String title,
         String description,
         LocalDateTime startDateTime,
         LocalDateTime endDateTime,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        List<String> pnpSessionIds
 ) {
     static HortEvent fromDto(HortEventDto eventDto) {
         final TimeService timeService = new TimeService();
@@ -22,7 +25,8 @@ record HortEvent(
                 eventDto.description(),
                 eventDto.startDateTime(),
                 eventDto.endDateTime(),
-                timeService.getCurrentTime()
+                timeService.getCurrentTime(),
+                new ArrayList<>()
         );
     }
 
@@ -33,7 +37,12 @@ record HortEvent(
                 hortEventDto.description(),
                 hortEventDto.startDateTime(),
                 hortEventDto.endDateTime(),
-                this.createdAt()
+                this.createdAt(),
+                this.pnpSessionIds()
         );
+    }
+
+    public void addPnpSessionId(String pnpSessionId) {
+        this.pnpSessionIds().add(pnpSessionId);
     }
 }
